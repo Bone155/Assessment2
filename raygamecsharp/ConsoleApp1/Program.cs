@@ -1,5 +1,5 @@
 ﻿using Raylib;
-using rl = Raylib.Raylib;
+using static Raylib.Raylib;
 
 namespace ConsoleApp1
 {
@@ -11,19 +11,18 @@ namespace ConsoleApp1
             //--------------------------------------------------------------------------------------
             Game game = new Game();
 
-
             int screenWidth = 800;
             int screenHeight = 450;
 
-            rl.InitWindow(screenWidth, screenHeight, "Tanks");
+            InitWindow(screenWidth, screenHeight, "Tanks");
 
             game.Init();
 
-            rl.SetTargetFPS(60);
+            SetTargetFPS(60);
             //--------------------------------------------------------------------------------------
 
             // Main game loop
-            while (!rl.WindowShouldClose())    // Detect window close button or ESC key
+            while (!WindowShouldClose())    // Detect window close button or ESC key
             {
                 // Update
                 //----------------------------------------------------------------------------------
@@ -44,7 +43,7 @@ namespace ConsoleApp1
             game.Shutdown();
             // De-Initialization
             //--------------------------------------------------------------------------------------
-            rl.CloseWindow();        // Close window and OpenGL context
+            CloseWindow();        // Close window and OpenGL context
                                      //--------------------------------------------------------------------------------------
 
             return 0;

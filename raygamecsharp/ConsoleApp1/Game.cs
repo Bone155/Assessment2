@@ -9,24 +9,17 @@ namespace ConsoleApp1
 {
     class Game
     {
-        Stopwatch stopwatch = new Stopwatch();
-
-        private long currentTime = 0;
-        private long lastTime = 0;
+        Timer gameTime = new Timer();
         private float timer = 0;
         private int fps = 1;
         private int frames;
 
-        private float deltaTime = 0.005f;
-
-        Tank tank = new Tank();
+        private float deltaTime;
+        Tank tank;
 
         public void Init()
         {
-            stopwatch.Start();
-            lastTime = stopwatch.ElapsedMilliseconds;
-
-            tank();
+            tank = new Tank("tankBlue.png", "barrelBlue.png");
         }
 
         public void Shutdown()
@@ -36,8 +29,7 @@ namespace ConsoleApp1
 
         public void Update()
         {
-            currentTime = stopwatch.ElapsedMilliseconds;
-            deltaTime = (currentTime - lastTime) / 1000.0f;
+            deltaTime = gameTime.GetDeltaTime();
 
             timer += deltaTime;
             if (timer >= 1)
@@ -47,8 +39,6 @@ namespace ConsoleApp1
                 timer -= 1;
             }
             frames++;
-
-            lastTime = currentTime;
 
             // insert game logic here            
             tank.OnUpdate(deltaTime);

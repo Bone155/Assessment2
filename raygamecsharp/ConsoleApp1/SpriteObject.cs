@@ -28,8 +28,8 @@ namespace ConsoleApp1
 
         public void Load(string filename)
         {
-            Image img = LoadImage(filename);
-            texture = LoadTextureFromImage(img);
+            image = LoadImage(filename);
+            texture = LoadTextureFromImage(image);
         }
 
         public override void OnDraw()

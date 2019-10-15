@@ -13,20 +13,24 @@ namespace ConsoleApp1
         SpriteObject tankSprite = new SpriteObject();
         SpriteObject turretSprite = new SpriteObject();
 
-        Tank()
-        {
+        int tankSpeed = 3;
+        int turretSpeed = 5;
 
-        }
-
-        Tank(Image tankImag, Image turretImg)
+        public Tank(string tank, string turret)
         {
-            tankSprite.Load("tankBlue_outline.png");
+            //Loading tank texture
+            tankSprite.Load(tank);
+
             // sprite is facing the wrong way... fix that here
             tankSprite.SetRotate(-90 * (float)(Math.PI / 180.0f));
 
             // sets an offset for the base, so it rotates around the centre
             tankSprite.SetPosition(-tankSprite.Width / 2.0f, tankSprite.Height / 2.0f);
-            turretSprite.Load("barrelBlue.png");
+
+            //Loading turret texture
+            turretSprite.Load(turret);
+
+            // sprite is facing the wrong way... fix that here
             turretSprite.SetRotate(-90 * (float)(Math.PI / 180.0f));
 
             // set the turret offset from the tank base
@@ -44,7 +48,12 @@ namespace ConsoleApp1
             tankObject.SetPosition(GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f);
         }
 
-        public virtual void OnUpdate(float deltaTime)
+        ~Tank()
+        {
+
+        }
+
+        public override void OnUpdate(float deltaTime)
         {
             if (IsKeyDown(KeyboardKey.KEY_A))
             {
