@@ -16,7 +16,9 @@ namespace ConsoleApp1
         public Timer()
         {
             stopwatch.Start();
-        }        public void Reset()
+        }
+
+        public void Reset()
         {
             stopwatch.Reset();
         }
@@ -25,12 +27,15 @@ namespace ConsoleApp1
         public float Seconds
         {
             get { return stopwatch.ElapsedMilliseconds / 1000.0f; }
-        }        public float GetDeltaTime()
+        }
+
+        public float GetDeltaTime()
         {
             lastTime = currentTime;
             currentTime = stopwatch.ElapsedMilliseconds;
             deltaTime = (currentTime - lastTime) / 1000.0f;
             return deltaTime;
-        }
+        }
+
     }
 }

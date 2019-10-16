@@ -14,7 +14,8 @@ namespace ConsoleApp1
         private int fps = 1;
         private int frames;
 
-        private float deltaTime;
+        private float deltaTime;
+
         Tank tank;
 
         public void Init()
@@ -51,8 +52,8 @@ namespace ConsoleApp1
             ClearBackground(Color.WHITE);
 
             DrawText(fps.ToString(), 10, 10, 12, Color.RED);
-
-            tank.Draw();
+            
+            tank.tankObject.Draw();
 
             EndDrawing();
         }

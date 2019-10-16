@@ -8,7 +8,7 @@ namespace ConsoleApp1
 {
     class Tank : SpriteObject
     {
-        SceneObject tankObject = new SceneObject();
+        public SceneObject tankObject = new SceneObject();
         SceneObject turretObject = new SceneObject();
         SpriteObject tankSprite = new SpriteObject();
         SpriteObject turretSprite = new SpriteObject();
@@ -55,29 +55,28 @@ namespace ConsoleApp1
 
         public override void OnUpdate(float deltaTime)
         {
+            
             if (IsKeyDown(KeyboardKey.KEY_A))
             {
-                tankObject.Rotate(-deltaTime);
+                tankObject.Rotate(-deltaTime * tankSpeed);
             }
 
             if (IsKeyDown(KeyboardKey.KEY_D))
             {
-                tankObject.Rotate(deltaTime);
+                tankObject.Rotate(deltaTime * tankSpeed);
             }
 
             if (IsKeyDown(KeyboardKey.KEY_W))
             {
-                Vector3 facing = new Vector3(
-                                            tankObject.LocalTransform.m1,
-                                            tankObject.LocalTransform.m2, 1) * deltaTime * 100;
+                Vector3 facing = new Vector3(tankObject.LocalTransform.m1, tankObject.LocalTransform.m2, 1) * deltaTime * 100 * tankSpeed;
+
                 tankObject.Translate(facing.x, facing.y);
             }
 
             if (IsKeyDown(KeyboardKey.KEY_S))
             {
-                Vector3 facing = new Vector3(
-                                            tankObject.LocalTransform.m1,
-                                            tankObject.LocalTransform.m2, 1) * deltaTime * -100;
+                Vector3 facing = new Vector3(tankObject.LocalTransform.m1, tankObject.LocalTransform.m2, 1) * deltaTime * -100 * tankSpeed;
+
                 tankObject.Translate(facing.x, facing.y);
             }
 
@@ -85,12 +84,12 @@ namespace ConsoleApp1
 
             if (IsKeyDown(KeyboardKey.KEY_LEFT))
             {
-                turretObject.Rotate(-deltaTime);
+                turretObject.Rotate(-deltaTime * turretSpeed);
             }
 
             if (IsKeyDown(KeyboardKey.KEY_RIGHT))
             {
-                turretObject.Rotate(deltaTime);
+                turretObject.Rotate(deltaTime * turretSpeed);
             }
         }
 
