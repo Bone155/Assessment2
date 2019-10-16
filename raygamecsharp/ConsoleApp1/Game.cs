@@ -52,6 +52,8 @@ namespace ConsoleApp1
             ClearBackground(Color.WHITE);
 
             DrawText(fps.ToString(), 10, 10, 12, Color.RED);
+
+
             
             tank.tankObject.Draw();
 

@@ -22,10 +22,13 @@ namespace ConsoleApp1
         {
             this.min = min;
             this.max = max;
-        }        public Vector3 Center()
+        }
+
+        public Vector3 Center()
         {
             return (min + max) * 0.5f;
-        }
+        }
+
         public Vector3 Extents()
         {
             return new Vector3(Math.Abs(max.x - min.x) * 0.5f,
@@ -42,7 +45,8 @@ namespace ConsoleApp1
             corners[2] = max;
             corners[3] = new Vector3(max.x, min.y, min.z);
             return corners;
-        }
+        }
+
         public void Fit(Vector3[] points)
         {
             // invalidate the extents
@@ -66,13 +70,16 @@ namespace ConsoleApp1
         {
             // test for not overlapped as it exits faster
             return !(p.x < min.x || p.y < min.y ||
-            p.x > max.x || p.y > max.y);
-        }        public bool Overlaps(AABB other)
+                     p.x > max.x || p.y > max.y);
+        }
+
+        public bool Overlaps(AABB other)
         {
             // test for not overlapped as it exits faster
             return !(max.x < other.min.x || max.y < other.min.y ||
-            min.x > other.max.x || min.y > other.max.y);
-        }
+                     min.x > other.max.x || min.y > other.max.y);
+        }
+
         public Vector3 ClosestPoint(Vector3 p)
         {
             return Vector3.Clamp(p, min, max);
