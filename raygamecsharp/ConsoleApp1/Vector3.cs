@@ -91,7 +91,7 @@ namespace ConsoleApp1
             return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z;
         }
 
-        public static bool operator !=(Vector3 lhs,Vector3 rhs)
+        public static bool operator !=(Vector3 lhs, Vector3 rhs)
         {
             return !(lhs == rhs);
         }
@@ -110,6 +110,5 @@ namespace ConsoleApp1
         {
             return Max(a, Min(a, t));
         }
-
     }
 }
