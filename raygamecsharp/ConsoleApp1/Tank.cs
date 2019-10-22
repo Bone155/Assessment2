@@ -9,7 +9,7 @@ namespace ConsoleApp1
     class Tank : SpriteObject
     {
         public SceneObject tankObject = new SceneObject();
-        SceneObject turretObject = new SceneObject();
+        public SceneObject turretObject = new SceneObject();
         SpriteObject tankSprite = new SpriteObject();
         SpriteObject turretSprite = new SpriteObject();
 
