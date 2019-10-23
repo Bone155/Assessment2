@@ -43,7 +43,7 @@ namespace ConsoleApp1
             }
             frames++;
 
-            // insert game logic here            
+            // insert game logic here
             tank.OnUpdate(deltaTime);
 
         }

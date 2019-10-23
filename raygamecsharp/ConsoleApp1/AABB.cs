@@ -6,11 +6,11 @@ namespace ConsoleApp1
 {
     class AABB
     {
-        Vector3 min = new Vector3(float.NegativeInfinity,
+        public Vector3 min = new Vector3(float.NegativeInfinity,
                                   float.NegativeInfinity,
                                   float.NegativeInfinity);
 
-        Vector3 max = new Vector3(float.PositiveInfinity,
+        public Vector3 max = new Vector3(float.PositiveInfinity,
                                   float.PositiveInfinity,
                                   float.PositiveInfinity);
 
@@ -48,6 +48,25 @@ namespace ConsoleApp1
         }
 
         public void Fit(Vector3[] points)
+        {
+            // invalidate the extents
+            min = new Vector3(float.PositiveInfinity,
+                              float.PositiveInfinity,
+                              float.PositiveInfinity);
+
+            max = new Vector3(float.NegativeInfinity,
+                              float.NegativeInfinity,
+                              float.NegativeInfinity);
+
+            // find min and max of the points
+            foreach (Vector3 p in points)
+            {
+                min = Vector3.Min(min, p);
+                max = Vector3.Max(max, p);
+            }
+        }
+
+        public void Fit(List<Vector3> points)
         {
             // invalidate the extents
             min = new Vector3(float.PositiveInfinity,

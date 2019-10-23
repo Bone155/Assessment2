@@ -15,7 +15,9 @@ namespace ConsoleApp1
         {
             bulletSprite.Load("bulletBlueSilver.png");
             bulletSprite.SetRotate(-90 * (float)(Math.PI / 180.0f));
-            bulletObject.AddChild(bulletSprite);
+            AddChild(bulletSprite);
+            bulletSprite.IsBullet = true;
+
         }
 
         ~Bullet()
@@ -26,7 +28,7 @@ namespace ConsoleApp1
         public void bulletSpawn(SceneObject turret)
         {
             localTransform.Set(turret.GlobalTransform);
-            Vector3 facing = new Vector3(bulletObject.LocalTransform.m1, bulletObject.LocalTransform.m2, 1);
+            Vector2 facing = new Vector2(bulletObject.LocalTransform.m1, bulletObject.LocalTransform.m2);
             bulletObject.Translate(facing.x, facing.y);
         }
 

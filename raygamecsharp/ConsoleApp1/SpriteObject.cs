@@ -10,7 +10,7 @@ namespace ConsoleApp1
     {
         Texture2D texture = new Texture2D();
         Image image = new Image();
-
+        public bool IsBullet = false;
         public float Width
         {
             get { return texture.width; }
@@ -34,6 +34,11 @@ namespace ConsoleApp1
 
         public override void OnDraw()
         {
+            if (IsBullet)
+            {
+                Console.WriteLine($"Bullet details: XY= {globalTransform.m7},{globalTransform.m8}");
+                
+            }
             float rotation = (float)Math.Atan2(globalTransform.m2, globalTransform.m1);
             DrawTextureEx(texture, new Vector2(globalTransform.m7, globalTransform.m8), rotation * (float)(180.0f / Math.PI), 1, Color.WHITE);
         }

@@ -14,6 +14,7 @@ namespace ConsoleApp1
         SpriteObject turretSprite = new SpriteObject();
 
         Bullet bullet = new Bullet();
+        AABB boundingBox = new AABB();
 
         int tankSpeed = 2;
         int turretSpeed = 2;
@@ -48,12 +49,37 @@ namespace ConsoleApp1
             // position/rotation of the tank without
             // affecting the offset of the base sprite
             tankObject.SetPosition(GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f);
+            //TankBox();
         }
 
         ~Tank()
         {
 
         }
+
+        //public void TankBox()
+        //{
+        //    Vector3 Last = new Vector3(tankSprite.Width, tankSprite.Height, 1);
+        //    for (int idx = 0; idx < 200; idx++)
+        //    {
+        //        if (idx > 0)
+        //            DrawLineEx( + Last, [idx], 2, Color.BLACK);
+
+        //        Last = [idx];
+        //    }
+
+        //    boundingBox.Center();
+        //    boundingBox.Extents();
+        //    boundingBox.Corners();
+        //    boundingBox.Fit();
+        //    boundingBox.max += tankSprite.Width;
+        //    boundingBox.min += tankSprite.Height;
+        //    //Drawing collision box
+        //    DrawLine((int)boundingBox.min.x, (int)boundingBox.min.y, (int)boundingBox.max.x, (int)boundingBox.min.y, Color.GREEN);
+        //    DrawLine((int)boundingBox.max.x, (int)boundingBox.min.y, (int)boundingBox.max.x, (int)boundingBox.max.y, Color.GREEN);
+        //    DrawLine((int)boundingBox.max.x, (int)boundingBox.max.y, (int)boundingBox.min.x, (int)boundingBox.max.y, Color.GREEN);
+        //    DrawLine((int)boundingBox.min.x, (int)boundingBox.max.y, (int)boundingBox.min.x, (int)boundingBox.min.y, Color.GREEN);
+        //}
 
         public override void OnUpdate(float deltaTime)
         {
@@ -70,14 +96,14 @@ namespace ConsoleApp1
 
             if (IsKeyDown(KeyboardKey.KEY_W))
             {
-                Vector3 facing = new Vector3(tankObject.LocalTransform.m1, tankObject.LocalTransform.m2, 1) * deltaTime * 100 * tankSpeed;
+                Vector2 facing = new Vector2(tankObject.LocalTransform.m1, tankObject.LocalTransform.m2) * deltaTime * 100 * tankSpeed;
 
                 tankObject.Translate(facing.x, facing.y);
             }
 
             if (IsKeyDown(KeyboardKey.KEY_S))
             {
-                Vector3 facing = new Vector3(tankObject.LocalTransform.m1, tankObject.LocalTransform.m2, 1) * deltaTime * -100 * tankSpeed;
+                Vector2 facing = new Vector2(tankObject.LocalTransform.m1, tankObject.LocalTransform.m2) * deltaTime * -100 * tankSpeed;
 
                 tankObject.Translate(facing.x, facing.y);
             }
@@ -95,29 +121,38 @@ namespace ConsoleApp1
             }
 
             float xR = turretObject.GlobalTransform.m1;
-            float yR = turretObject.GlobalTransform.m4;
+            float yR = turretObject.GlobalTransform.m2;
             float rot = MathF.Atan2(xR, yR);
 
             if (IsKeyPressed(KeyboardKey.KEY_SPACE))
-            {
+            {                
                 turretObject.AddChild(bullet.bulletObject);
-                bullet.bulletObject.SetPosition(65, -5.5f);
+                bullet.bulletObject.SetPosition(0, 0);
 
-                float bulletX = bullet.bulletObject.GlobalTransform.m7;
-                float bulletY = bullet.bulletObject.GlobalTransform.m8;
+                float tx = turretObject.GlobalTransform.m7;
+                float ty = turretObject.GlobalTransform.m8;
 
-                float xDir = bulletX - turretSprite.GlobalTransform.m7;
-                float yDir = bulletY - turretSprite.GlobalTransform.m8;
+                bullet.bulletObject.GlobalTransform.m7 = 100;
+                bullet.bulletObject.GlobalTransform.m8 = 100;
 
-                Vector3 dir = new Vector3(xDir, yDir, 1);
+                //float bulletX = bullet.bulletObject.GlobalTransform.m7;
+                //float bulletY = bullet.bulletObject.GlobalTransform.m8;
 
-                dir.Normalize();
+                //float xDir = bulletX - turretSprite.GlobalTransform.m7;
+                //float yDir = bulletY - turretSprite.GlobalTransform.m8;
+
+                //Vector2 dir = new Vector2(xDir, yDir);
+
+                //Vector2.Normalize(dir);
 
                 turretObject.RemoveChild(bullet.bulletObject);
 
                 bullet.bulletObject.SetRotate(rot);
-                bullet.bulletObject.SetPosition(bulletX, bulletY);
+                //bullet.bulletObject.SetPosition(bulletX, bulletY);
+                //bullet.bulletObject.Translate(dir.x, dir.y);
             }
+
+
 
         }
 
