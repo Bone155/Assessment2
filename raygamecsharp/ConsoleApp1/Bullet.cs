@@ -10,20 +10,12 @@ namespace ConsoleApp1
     {
         public SceneObject bulletObject = new SceneObject();
         SpriteObject bulletSprite = new SpriteObject();
-        Tank tank;
 
-        int bulletSpeed = 50;
-
-        public Bullet(string bullet)
+        public Bullet()
         {
-            bulletSprite.Load(bullet);
-        }
-
-        public void Face(SceneObject turret)
-        {
-            localTransform.Set(turret.GlobalTransform);
-            Vector3 facing = new Vector3(tank.tankObject.LocalTransform.m1, tank.tankObject.LocalTransform.m2, 1) * bulletSpeed;
-            Translate(facing.x, facing.y);
+            bulletSprite.Load("bulletBlueSilver.png");
+            bulletSprite.SetRotate(-90 * (float)(Math.PI / 180.0f));
+            bulletObject.AddChild(bulletSprite);
         }
 
         ~Bullet()
@@ -31,12 +23,11 @@ namespace ConsoleApp1
 
         }
 
-        public override void OnUpdate(float deltaTime)
+        public void bulletSpawn(SceneObject turret)
         {
-            if (IsKeyDown(KeyboardKey.KEY_SPACE))
-            {
-                
-            }
+            localTransform.Set(turret.GlobalTransform);
+            Vector3 facing = new Vector3(bulletObject.LocalTransform.m1, bulletObject.LocalTransform.m2, 1);
+            bulletObject.Translate(facing.x, facing.y);
         }
 
     }

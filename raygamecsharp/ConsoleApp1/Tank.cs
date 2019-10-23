@@ -9,17 +9,19 @@ namespace ConsoleApp1
     class Tank : SpriteObject
     {
         public SceneObject tankObject = new SceneObject();
-        public SceneObject turretObject = new SceneObject();
+        SceneObject turretObject = new SceneObject();
         SpriteObject tankSprite = new SpriteObject();
         SpriteObject turretSprite = new SpriteObject();
 
-        int tankSpeed = 3;
-        int turretSpeed = 5;
+        Bullet bullet = new Bullet();
 
-        public Tank(string tank, string turret)
+        int tankSpeed = 2;
+        int turretSpeed = 2;
+
+        public Tank()
         {
             //Loading tank texture
-            tankSprite.Load(tank);
+            tankSprite.Load("tankBlue.png");
 
             // sprite is facing the wrong way... fix that here
             tankSprite.SetRotate(-90 * (float)(Math.PI / 180.0f));
@@ -28,7 +30,7 @@ namespace ConsoleApp1
             tankSprite.SetPosition(-tankSprite.Width / 2.0f, tankSprite.Height / 2.0f);
 
             //Loading turret texture
-            turretSprite.Load(turret);
+            turretSprite.Load("barrelBlue.png");
 
             // sprite is facing the wrong way... fix that here
             turretSprite.SetRotate(-90 * (float)(Math.PI / 180.0f));
@@ -91,6 +93,32 @@ namespace ConsoleApp1
             {
                 turretObject.Rotate(deltaTime * turretSpeed);
             }
+
+            float xR = turretObject.GlobalTransform.m1;
+            float yR = turretObject.GlobalTransform.m4;
+            float rot = MathF.Atan2(xR, yR);
+
+            if (IsKeyPressed(KeyboardKey.KEY_SPACE))
+            {
+                turretObject.AddChild(bullet.bulletObject);
+                bullet.bulletObject.SetPosition(65, -5.5f);
+
+                float bulletX = bullet.bulletObject.GlobalTransform.m7;
+                float bulletY = bullet.bulletObject.GlobalTransform.m8;
+
+                float xDir = bulletX - turretSprite.GlobalTransform.m7;
+                float yDir = bulletY - turretSprite.GlobalTransform.m8;
+
+                Vector3 dir = new Vector3(xDir, yDir, 1);
+
+                dir.Normalize();
+
+                turretObject.RemoveChild(bullet.bulletObject);
+
+                bullet.bulletObject.SetRotate(rot);
+                bullet.bulletObject.SetPosition(bulletX, bulletY);
+            }
+
         }
 
     }

@@ -96,14 +96,14 @@ namespace ConsoleApp1
             return x * rhs.x + y * rhs.y + z * rhs.z + w * rhs.w;
         }
 
-        public static bool operator ==(Vector4 lhs, Vector4 rhs)
-        {
-            return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z && lhs.w == rhs.w;
-        }
+        //public static bool operator ==(Vector4 lhs, Vector4 rhs)
+        //{
+        //    return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z && lhs.w == rhs.w;
+        //}
 
-        public static bool operator !=(Vector4 lhs, Vector4 rhs)
-        {
-            return !(lhs == rhs);
-        }
+        //public static bool operator !=(Vector4 lhs, Vector4 rhs)
+        //{
+        //    return !(lhs == rhs);
+        //}
     }
 }

@@ -86,15 +86,15 @@ namespace ConsoleApp1
             lhs.z / rhs);
         }
 
-        public static bool operator ==(Vector3 lhs, Vector3 rhs)
-        {
-            return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z;
-        }
+        //public static bool operator ==(Vector3 lhs, Vector3 rhs)
+        //{
+        //    return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z;
+        //}
 
-        public static bool operator !=(Vector3 lhs, Vector3 rhs)
-        {
-            return !(lhs == rhs);
-        }
+        //public static bool operator !=(Vector3 lhs, Vector3 rhs)
+        //{
+        //    return !(lhs == rhs);
+        //}
 
         public static Vector3 Min(Vector3 a, Vector3 b)
         {

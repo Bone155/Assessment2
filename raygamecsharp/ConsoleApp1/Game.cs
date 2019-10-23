@@ -21,8 +21,8 @@ namespace ConsoleApp1
 
         public void Init()
         {
-            tank = new Tank("tankBlue.png", "barrelBlue.png");
-            bullet = new Bullet("bulletBlueSilver.png");
+            tank = new Tank();
+            bullet = new Bullet();
         }
 
         public void Shutdown()
@@ -45,7 +45,7 @@ namespace ConsoleApp1
 
             // insert game logic here            
             tank.OnUpdate(deltaTime);
-            bullet.OnUpdate(deltaTime);
+
         }
 
         public void Draw()
@@ -57,6 +57,7 @@ namespace ConsoleApp1
             DrawText(fps.ToString(), 10, 10, 12, Color.RED);
 
             tank.tankObject.Draw();
+
             bullet.bulletObject.Draw();
 
             EndDrawing();
