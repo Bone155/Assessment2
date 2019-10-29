@@ -8,16 +8,13 @@ namespace ConsoleApp1
 {
     class Bullet : SpriteObject
     {
-        public SceneObject bulletObject = new SceneObject();
         SpriteObject bulletSprite = new SpriteObject();
 
         public Bullet()
         {
             bulletSprite.Load("bulletBlueSilver.png");
-            bulletSprite.SetRotate(-90 * (float)(Math.PI / 180.0f));
+            bulletSprite.SetRotate(90 * (float)(Math.PI / 180.0f));
             AddChild(bulletSprite);
-            bulletSprite.IsBullet = true;
-
         }
 
         ~Bullet()
@@ -25,11 +22,11 @@ namespace ConsoleApp1
 
         }
 
-        public void bulletSpawn(SceneObject turret)
+        public void bulletSpawn(SceneObject turret, float deltaTime)
         {
             localTransform.Set(turret.GlobalTransform);
-            Vector2 facing = new Vector2(bulletObject.LocalTransform.m1, bulletObject.LocalTransform.m2);
-            bulletObject.Translate(facing.x, facing.y);
+            Vector2 facing = new Vector2(LocalTransform.m1, LocalTransform.m2) * deltaTime;
+            Translate(facing.x, facing.y);
         }
 
     }

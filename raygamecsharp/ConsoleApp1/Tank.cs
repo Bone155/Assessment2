@@ -14,10 +14,19 @@ namespace ConsoleApp1
         SpriteObject turretSprite = new SpriteObject();
 
         Bullet bullet = new Bullet();
-        AABB boundingBox = new AABB();
+        public AABB2 tankB = new AABB2();
+        Vector2 position = new Vector2();
+        SceneObject Tlft = new SceneObject();
+        SceneObject Trt = new SceneObject();
+        SceneObject Brt = new SceneObject();
+        SceneObject Blft = new SceneObject();
+        SceneObject[] Corners = new SceneObject[4];
 
         int tankSpeed = 2;
         int turretSpeed = 2;
+        int bulletSpeed = 6;
+        int bulletTime = 0;
+        bool isbullet = false;
 
         public Tank()
         {
@@ -44,12 +53,19 @@ namespace ConsoleApp1
             turretObject.AddChild(turretSprite);
             tankObject.AddChild(tankSprite);
             tankObject.AddChild(turretObject);
+            Corners[0] = Tlft;
+            Corners[1] = Trt;
+            Corners[2] = Brt;
+            Corners[3] = Blft;
+            tankObject.AddChild(Corners[0]);
+            tankObject.AddChild(Corners[1]);
+            tankObject.AddChild(Corners[2]);
+            tankObject.AddChild(Corners[3]);
 
             // having an empty object for the tank parent means we can set the
             // position/rotation of the tank without
             // affecting the offset of the base sprite
             tankObject.SetPosition(GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f);
-            //TankBox();
         }
 
         ~Tank()
@@ -57,29 +73,20 @@ namespace ConsoleApp1
 
         }
 
-        //public void TankBox()
-        //{
-        //    Vector3 Last = new Vector3(tankSprite.Width, tankSprite.Height, 1);
-        //    for (int idx = 0; idx < 200; idx++)
-        //    {
-        //        if (idx > 0)
-        //            DrawLineEx( + Last, [idx], 2, Color.BLACK);
-
-        //        Last = [idx];
-        //    }
-
-        //    boundingBox.Center();
-        //    boundingBox.Extents();
-        //    boundingBox.Corners();
-        //    boundingBox.Fit();
-        //    boundingBox.max += tankSprite.Width;
-        //    boundingBox.min += tankSprite.Height;
-        //    //Drawing collision box
-        //    DrawLine((int)boundingBox.min.x, (int)boundingBox.min.y, (int)boundingBox.max.x, (int)boundingBox.min.y, Color.GREEN);
-        //    DrawLine((int)boundingBox.max.x, (int)boundingBox.min.y, (int)boundingBox.max.x, (int)boundingBox.max.y, Color.GREEN);
-        //    DrawLine((int)boundingBox.max.x, (int)boundingBox.max.y, (int)boundingBox.min.x, (int)boundingBox.max.y, Color.GREEN);
-        //    DrawLine((int)boundingBox.min.x, (int)boundingBox.max.y, (int)boundingBox.min.x, (int)boundingBox.min.y, Color.GREEN);
-        //}
+        public void TankBox()
+        {
+            Vector2[] MyPoints = new Vector2[4];
+            MyPoints[0] = new Vector2(Corners[0].GlobalTransform.m7 - (Width / 2), Corners[0].GlobalTransform.m8 - (Height / 2));
+            MyPoints[1] = new Vector2(Corners[1].GlobalTransform.m7 + (Width / 2), Corners[1].GlobalTransform.m8 - (Height / 2));
+            MyPoints[2] = new Vector2(Corners[2].GlobalTransform.m7 + (Width / 2), Corners[2].GlobalTransform.m8 + (Height / 2));
+            MyPoints[3] = new Vector2(Corners[3].GlobalTransform.m7 - (Width / 2), Corners[3].GlobalTransform.m8 + (Height / 2));
+            
+            tankB.Fit(MyPoints);
+            DrawLineEx(MyPoints[0], MyPoints[1], 2, Color.GREEN);
+            DrawLineEx(MyPoints[1], MyPoints[2], 2, Color.GREEN);
+            DrawLineEx(MyPoints[2], MyPoints[3], 2, Color.GREEN);
+            DrawLineEx(MyPoints[3], MyPoints[0], 2, Color.GREEN);
+        }
 
         public override void OnUpdate(float deltaTime)
         {
@@ -96,14 +103,14 @@ namespace ConsoleApp1
 
             if (IsKeyDown(KeyboardKey.KEY_W))
             {
-                Vector2 facing = new Vector2(tankObject.LocalTransform.m1, tankObject.LocalTransform.m2) * deltaTime * 100 * tankSpeed;
+                Vector3 facing = new Vector3(tankObject.LocalTransform.m1, tankObject.LocalTransform.m2, tankObject.LocalTransform.m3) * deltaTime * 100 * tankSpeed;
 
                 tankObject.Translate(facing.x, facing.y);
             }
 
             if (IsKeyDown(KeyboardKey.KEY_S))
             {
-                Vector2 facing = new Vector2(tankObject.LocalTransform.m1, tankObject.LocalTransform.m2) * deltaTime * -100 * tankSpeed;
+                Vector3 facing = new Vector3(tankObject.LocalTransform.m1, tankObject.LocalTransform.m2, tankObject.LocalTransform.m3) * deltaTime * -100 * tankSpeed;
 
                 tankObject.Translate(facing.x, facing.y);
             }
@@ -120,40 +127,35 @@ namespace ConsoleApp1
                 turretObject.Rotate(deltaTime * turretSpeed);
             }
 
+            bullet.Draw();
             float xR = turretObject.GlobalTransform.m1;
             float yR = turretObject.GlobalTransform.m2;
             float rot = MathF.Atan2(xR, yR);
 
             if (IsKeyPressed(KeyboardKey.KEY_SPACE))
             {                
-                turretObject.AddChild(bullet.bulletObject);
-                bullet.bulletObject.SetPosition(0, 0);
+                turretObject.AddChild(bullet);
+                bullet.SetPosition(65, -5.5f);
 
-                float tx = turretObject.GlobalTransform.m7;
-                float ty = turretObject.GlobalTransform.m8;
+                float bulletX = bullet.GlobalTransform.m7;
+                float bulletY = bullet.GlobalTransform.m8;
 
-                bullet.bulletObject.GlobalTransform.m7 = 100;
-                bullet.bulletObject.GlobalTransform.m8 = 100;
+                turretObject.RemoveChild(bullet);
 
-                //float bulletX = bullet.bulletObject.GlobalTransform.m7;
-                //float bulletY = bullet.bulletObject.GlobalTransform.m8;
+                bullet.SetRotate(rot);
+                bullet.bulletSpawn(turretObject, deltaTime);
+                bullet.SetPosition(bulletX, bulletY);
 
-                //float xDir = bulletX - turretSprite.GlobalTransform.m7;
-                //float yDir = bulletY - turretSprite.GlobalTransform.m8;
-
-                //Vector2 dir = new Vector2(xDir, yDir);
-
-                //Vector2.Normalize(dir);
-
-                turretObject.RemoveChild(bullet.bulletObject);
-
-                bullet.bulletObject.SetRotate(rot);
-                //bullet.bulletObject.SetPosition(bulletX, bulletY);
-                //bullet.bulletObject.Translate(dir.x, dir.y);
+                isbullet = true;
             }
 
+            if (isbullet)
+            {
+                Vector2 facing = new Vector2(bullet.LocalTransform.m1, bullet.LocalTransform.m2) * deltaTime * 100 * bulletSpeed;
+                bullet.Translate(facing.x, facing.y);
+            }
 
-
+            TankBox();
         }
 
     }
