@@ -11,8 +11,8 @@ namespace ConsoleApp1
             //--------------------------------------------------------------------------------------
             Game game = new Game();
 
-            int screenWidth = 800;
-            int screenHeight = 450;
+            int screenWidth = 1600;
+            int screenHeight = 900;
 
             InitWindow(screenWidth, screenHeight, "Tanks");
 
