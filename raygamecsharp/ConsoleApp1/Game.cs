@@ -16,6 +16,9 @@ namespace ConsoleApp1
 
         private float deltaTime;
 
+        int GameOverTime = 0;
+        bool winState1;
+        bool winState2;
         Tank tank;
         Tank tank2;
 
@@ -26,6 +29,8 @@ namespace ConsoleApp1
             tank.SetPosition(50, 90);
             tank2.SetPosition(GetScreenWidth() - 50, GetScreenHeight() - 80);
             tank2.Rotate((float)Math.PI);
+            winState1 = tank.winState;
+            winState2 = tank2.winState;
         }
         
         public void Shutdown()
@@ -69,12 +74,64 @@ namespace ConsoleApp1
             }
             if (tank.health <= 0)
             {
-                DrawText("Red Tank Wins!", 10, 90, 200, Color.RED);
+                tank.health = 0;
+                GameOverTime++;
+                if ((GameOverTime * deltaTime) >= 1)
+                {
+                    winState2 = true;
+                    DrawText("Red Tank Wins!", 10, 90, 200, Color.RED);
+                }
             }
 
             if (tank2.health <= 0)
             {
-                DrawText("Blue Tank Wins!", 10, 90, 200, Color.SKYBLUE);
+                tank2.health = 0;
+                GameOverTime++;
+                if ((GameOverTime * deltaTime) >= 1)
+                {
+                    winState1 = true;
+                    DrawText("Blue Tank Wins!", 10, 90, 200, Color.SKYBLUE);
+                }
+            }
+
+            if (winState1 || winState2)
+            {
+                tank.tankSpeed = 0 * (int)deltaTime;
+                tank.turretSpeed = 0 * (int)deltaTime;
+                tank.isbullet = false;
+
+                tank2.tankSpeed = 0 * (int)deltaTime;
+                tank2.turretSpeed = 0 * (int)deltaTime;
+                tank2.isbullet = false;
+            }
+
+            if (tank.GlobalTransform.m7 <= 0)
+                tank.GlobalTransform.m7 = GetScreenWidth() - 1;
+
+            if (tank.GlobalTransform.m7 >= GetScreenWidth())
+                tank.GlobalTransform.m7 = 0;
+
+            if (tank.GlobalTransform.m8 <= 0)
+                tank.GlobalTransform.m8 = GetScreenHeight() - 1;
+
+            if (tank.GlobalTransform.m8 >= GetScreenHeight())
+                tank.GlobalTransform.m8 = 0;
+
+            if (tank2.GlobalTransform.m7 <= 0)
+                tank2.GlobalTransform.m7 = GetScreenWidth() - 1;
+
+            if (tank2.GlobalTransform.m7 >= GetScreenWidth())
+                tank2.GlobalTransform.m7 = 0;
+
+            if (tank2.GlobalTransform.m8 <= 0)
+                tank2.GlobalTransform.m8 = GetScreenHeight() - 1;
+
+            if (tank2.GlobalTransform.m8 >= GetScreenHeight())
+                tank2.GlobalTransform.m8 = 0;
+
+            if (IsKeyPressed(KeyboardKey.KEY_ENTER))
+            {
+                //restart window
             }
         }
 

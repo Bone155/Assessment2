@@ -17,11 +17,13 @@ namespace ConsoleApp1
         SceneObject[] Corners = new SceneObject[4];
         public AABB2 BulletAABB;
 
-        int tankSpeed = 2;
-        int turretSpeed = 2;
-        int bulletSpeed = 6;
-        bool isbullet = false;
+        public int tankSpeed = 2;
+        public int turretSpeed = 2;
+        public int bulletSpeed = 6;
+        
+        public bool isbullet = false;
         public int health = 3;
+        public bool winState = false;
 
         public Tank(string tank, string turret, string bulletF)
         {
@@ -157,7 +159,6 @@ namespace ConsoleApp1
 
                 isbullet = true;
             }
-
 
             if (isbullet)
             {
