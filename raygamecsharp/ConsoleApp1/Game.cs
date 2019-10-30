@@ -19,18 +19,18 @@ namespace ConsoleApp1
         int GameOverTime = 0;
         bool winState1;
         bool winState2;
-        Tank tank;
-        Tank tank2;
+        Tank blueTank;
+        Tank redTank;
 
         public void Init()
         {
-            tank = new Tank("tankBlue.png", "barrelBlue.png", "bulletBlueSilver.png");
-            tank2 = new Tank("tankRed.png", "barrelRed.png", "bulletRedSilver.png");
-            tank.SetPosition(50, 90);
-            tank2.SetPosition(GetScreenWidth() - 50, GetScreenHeight() - 80);
-            tank2.Rotate((float)Math.PI);
-            winState1 = tank.winState;
-            winState2 = tank2.winState;
+            blueTank = new Tank("tankBlue.png", "barrelBlue.png", "bulletBlueSilver.png");
+            redTank = new Tank("tankRed.png", "barrelRed.png", "bulletRedSilver.png");
+            blueTank.SetPosition(50, 120);
+            redTank.SetPosition(GetScreenWidth() - 50, GetScreenHeight() - 80);
+            redTank.Rotate((float)Math.PI);
+            winState1 = blueTank.winState;
+            winState2 = redTank.winState;
         }
         
         public void Shutdown()
@@ -52,29 +52,32 @@ namespace ConsoleApp1
             frames++;
 
             // insert game logic here
-            tank.OnUpdate(deltaTime);
-            tank2.OnUpdate(deltaTime);
-            tank.P1(deltaTime);
-            tank2.P2(deltaTime);
-            if (tank.BulletAABB.Overlaps(tank2.tankB))
+            blueTank.OnUpdate(deltaTime);
+            redTank.OnUpdate(deltaTime);
+            blueTank.P1(deltaTime);
+            redTank.P2(deltaTime);
+
+            if (blueTank.BulletAABB.Overlaps(redTank.tankB))
             {
-                DrawLine((int)tank2.tankB.min.x, (int)tank2.tankB.min.y, (int)tank2.tankB.max.x, (int)tank2.tankB.min.y, Color.RED);
-                DrawLine((int)tank2.tankB.max.x, (int)tank2.tankB.min.y, (int)tank2.tankB.max.x, (int)tank2.tankB.max.y, Color.RED);
-                DrawLine((int)tank2.tankB.max.x, (int)tank2.tankB.max.y, (int)tank2.tankB.min.x, (int)tank2.tankB.max.y, Color.RED);
-                DrawLine((int)tank2.tankB.min.x, (int)tank2.tankB.max.y, (int)tank2.tankB.min.x, (int)tank2.tankB.min.y, Color.RED);
-                tank2.health--;
+                DrawLine((int)redTank.tankB.min.x, (int)redTank.tankB.min.y, (int)redTank.tankB.max.x, (int)redTank.tankB.min.y, Color.BLACK);
+                DrawLine((int)redTank.tankB.max.x, (int)redTank.tankB.min.y, (int)redTank.tankB.max.x, (int)redTank.tankB.max.y, Color.BLACK);
+                DrawLine((int)redTank.tankB.max.x, (int)redTank.tankB.max.y, (int)redTank.tankB.min.x, (int)redTank.tankB.max.y, Color.BLACK);
+                DrawLine((int)redTank.tankB.min.x, (int)redTank.tankB.max.y, (int)redTank.tankB.min.x, (int)redTank.tankB.min.y, Color.BLACK);
+                redTank.health--;
             }
-            if (tank2.BulletAABB.Overlaps(tank.tankB))
+
+            if (redTank.BulletAABB.Overlaps(blueTank.tankB))
             {
-                DrawLine((int)tank.tankB.min.x, (int)tank.tankB.min.y, (int)tank.tankB.max.x, (int)tank.tankB.min.y, Color.RED);
-                DrawLine((int)tank.tankB.max.x, (int)tank.tankB.min.y, (int)tank.tankB.max.x, (int)tank.tankB.max.y, Color.RED);
-                DrawLine((int)tank.tankB.max.x, (int)tank.tankB.max.y, (int)tank.tankB.min.x, (int)tank.tankB.max.y, Color.RED);
-                DrawLine((int)tank.tankB.min.x, (int)tank.tankB.max.y, (int)tank.tankB.min.x, (int)tank.tankB.min.y, Color.RED);
-                tank.health--;
+                DrawLine((int)blueTank.tankB.min.x, (int)blueTank.tankB.min.y, (int)blueTank.tankB.max.x, (int)blueTank.tankB.min.y, Color.BLACK);
+                DrawLine((int)blueTank.tankB.max.x, (int)blueTank.tankB.min.y, (int)blueTank.tankB.max.x, (int)blueTank.tankB.max.y, Color.BLACK);
+                DrawLine((int)blueTank.tankB.max.x, (int)blueTank.tankB.max.y, (int)blueTank.tankB.min.x, (int)blueTank.tankB.max.y, Color.BLACK);
+                DrawLine((int)blueTank.tankB.min.x, (int)blueTank.tankB.max.y, (int)blueTank.tankB.min.x, (int)blueTank.tankB.min.y, Color.BLACK);
+                blueTank.health--;
             }
-            if (tank.health <= 0)
+
+            if (blueTank.health <= 0)
             {
-                tank.health = 0;
+                blueTank.health = 0;
                 GameOverTime++;
                 if ((GameOverTime * deltaTime) >= 1)
                 {
@@ -83,9 +86,9 @@ namespace ConsoleApp1
                 }
             }
 
-            if (tank2.health <= 0)
+            if (redTank.health <= 0)
             {
-                tank2.health = 0;
+                redTank.health = 0;
                 GameOverTime++;
                 if ((GameOverTime * deltaTime) >= 1)
                 {
@@ -96,43 +99,44 @@ namespace ConsoleApp1
 
             if (winState1 || winState2)
             {
-                tank.tankSpeed = 0 * (int)deltaTime;
-                tank.turretSpeed = 0 * (int)deltaTime;
-                tank.isbullet = false;
+                blueTank.tankSpeed = 0 * (int)deltaTime;
+                blueTank.turretSpeed = 0 * (int)deltaTime;
+                blueTank.isbullet = false;
 
-                tank2.tankSpeed = 0 * (int)deltaTime;
-                tank2.turretSpeed = 0 * (int)deltaTime;
-                tank2.isbullet = false;
+                redTank.tankSpeed = 0 * (int)deltaTime;
+                redTank.turretSpeed = 0 * (int)deltaTime;
+                redTank.isbullet = false;
             }
 
-            if (tank.GlobalTransform.m7 <= 0)
-                tank.GlobalTransform.m7 = GetScreenWidth() - 1;
+            if (blueTank.GlobalTransform.m7 <= 0)
+                blueTank.GlobalTransform.m7 = GetScreenWidth() - 1;
 
-            if (tank.GlobalTransform.m7 >= GetScreenWidth())
-                tank.GlobalTransform.m7 = 0;
+            if (blueTank.GlobalTransform.m7 >= GetScreenWidth())
+                blueTank.GlobalTransform.m7 = 0;
 
-            if (tank.GlobalTransform.m8 <= 0)
-                tank.GlobalTransform.m8 = GetScreenHeight() - 1;
+            if (blueTank.GlobalTransform.m8 <= 0)
+                blueTank.GlobalTransform.m8 = GetScreenHeight() - 1;
 
-            if (tank.GlobalTransform.m8 >= GetScreenHeight())
-                tank.GlobalTransform.m8 = 0;
+            if (blueTank.GlobalTransform.m8 >= GetScreenHeight())
+                blueTank.GlobalTransform.m8 = 0;
 
-            if (tank2.GlobalTransform.m7 <= 0)
-                tank2.GlobalTransform.m7 = GetScreenWidth() - 1;
+            if (redTank.GlobalTransform.m7 <= 0)
+                redTank.GlobalTransform.m7 = GetScreenWidth() - 1;
 
-            if (tank2.GlobalTransform.m7 >= GetScreenWidth())
-                tank2.GlobalTransform.m7 = 0;
+            if (redTank.GlobalTransform.m7 >= GetScreenWidth())
+                redTank.GlobalTransform.m7 = 0;
 
-            if (tank2.GlobalTransform.m8 <= 0)
-                tank2.GlobalTransform.m8 = GetScreenHeight() - 1;
+            if (redTank.GlobalTransform.m8 <= 0)
+                redTank.GlobalTransform.m8 = GetScreenHeight() - 1;
 
-            if (tank2.GlobalTransform.m8 >= GetScreenHeight())
-                tank2.GlobalTransform.m8 = 0;
+            if (redTank.GlobalTransform.m8 >= GetScreenHeight())
+                redTank.GlobalTransform.m8 = 0;
 
-            if (IsKeyPressed(KeyboardKey.KEY_ENTER))
-            {
-                //restart window
-            }
+            if ((blueTank.reloadTime * deltaTime) >= 0 && (blueTank.reloadTime * deltaTime) < 5)
+                DrawText("Reloading", 10, 30, 24, Color.SKYBLUE);
+
+            if ((redTank.reloadTime * deltaTime) >= 0 && (redTank.reloadTime * deltaTime) < 5)
+                DrawText("Reloading", GetScreenWidth() - 120, 30, 24, Color.RED);
         }
 
         public void Draw()
@@ -141,11 +145,11 @@ namespace ConsoleApp1
 
             ClearBackground(Color.BLACK);
 
-            DrawText("Blue Tank: " + tank.health, 10, 10, 12, Color.RED);
-            DrawText("Red Tank: " + tank2.health, GetScreenWidth() - 90, 10, 12, Color.RED);
+            DrawText("Blue Tank: " + blueTank.health, 10, 10, 12, Color.SKYBLUE);
+            DrawText("Red Tank: " + redTank.health, GetScreenWidth() - 90, 10, 12, Color.RED);
 
-            tank.Draw();
-            tank2.Draw();
+            blueTank.Draw();
+            redTank.Draw();
 
             EndDrawing();
         }

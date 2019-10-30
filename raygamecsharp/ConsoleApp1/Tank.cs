@@ -20,9 +20,9 @@ namespace ConsoleApp1
         public int tankSpeed = 2;
         public int turretSpeed = 2;
         public int bulletSpeed = 6;
-        
+        public int reloadTime = 0;
         public bool isbullet = false;
-        public int health = 3;
+        public int health = 50;
         public bool winState = false;
 
         public Tank(string tank, string turret, string bulletF)
@@ -143,7 +143,7 @@ namespace ConsoleApp1
             float yR = turretObject.GlobalTransform.m2;
             float rot = MathF.Atan2(xR, yR);
 
-            if (IsKeyPressed(KeyboardKey.KEY_SPACE))
+            if (IsKeyPressed(KeyboardKey.KEY_SPACE) && (reloadTime * deltaTime) >= 5)
             {
                 turretObject.AddChild(bullet);
                 bullet.SetPosition(65, -5.5f);
@@ -152,7 +152,7 @@ namespace ConsoleApp1
                 float bulletY = bullet.GlobalTransform.m8;
 
                 turretObject.RemoveChild(bullet);
-
+                reloadTime = 0;
                 bullet.SetRotate(rot);
                 bullet.bulletSpawn(turretObject, deltaTime);
                 bullet.SetPosition(bulletX, bulletY);
@@ -210,7 +210,7 @@ namespace ConsoleApp1
             float yR = turretObject.GlobalTransform.m2;
             float rot = MathF.Atan2(xR, yR);
 
-            if (IsKeyPressed(KeyboardKey.KEY_KP_ENTER))
+            if (IsKeyPressed(KeyboardKey.KEY_KP_ENTER) && (reloadTime * deltaTime) >= 5)
             {
                 turretObject.AddChild(bullet);
                 bullet.SetPosition(65, -5.5f);
@@ -219,7 +219,7 @@ namespace ConsoleApp1
                 float bulletY = bullet.GlobalTransform.m8;
 
                 turretObject.RemoveChild(bullet);
-
+                reloadTime = 0;
                 bullet.SetRotate(rot);
                 bullet.bulletSpawn(turretObject, deltaTime);
                 bullet.SetPosition(bulletX, bulletY);
@@ -236,7 +236,7 @@ namespace ConsoleApp1
 
         public override void OnUpdate(float deltaTime)
         {
-            
+            reloadTime++;
             TankBox();
             bullet.BulletBox();
         }
